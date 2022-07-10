@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Node from "./Node";
+import BFS from "./BFS";
 
 const Board = () => {
 
@@ -9,7 +10,7 @@ const Board = () => {
     const [ rows, setRows ] = useState(15)
     const [ cols, setCols ] = useState(50)
     const [ start, setStart ] = useState([7, 12])
-    const [ destination, setDestination ] = useState([7, 37])
+    const [ destination, setDestination ] = useState([7, 27])
 
     useEffect(() => {
         let arr = []
@@ -28,14 +29,30 @@ const Board = () => {
             }
         }
 
-        Node.updateBoard = function () {
-            setVisits( x => x + 1 )
-        }
+        Node.updateBoard = function () { setVisits( x => x + 1 ) }
+        Node.gridDimensions = [ rows, cols ]
+
         setNodes(arr)
     }, [])
 
-    const findPath = () => {
+    const getNode = (pos) => {
+        let index
 
+        if ( Number.isInteger(pos) ){ // Index
+            index = pos
+        } else if ( !Array.isArray(pos) ) { // Element ID str
+            pos = pos.split('-')
+            index = parseInt( pos[0] ) * cols + parseInt( pos[1] )
+        } else { // Coords [x,y]
+            index = pos[0] * cols + pos[1]
+        }
+
+        return nodes[index]
+    }
+
+    const findPath = () => {
+        let start = document.querySelector('.cell.start').id
+        BFS( start, getNode )
     }
 
     return (
