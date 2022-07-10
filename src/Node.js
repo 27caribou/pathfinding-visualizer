@@ -3,7 +3,8 @@ export default class Node {
     #coords;
     #type;
     #visited = false
-    #canAnimate = false
+    #previousNode = null
+    #animationStatus = ''
 
     static updateBoard;
     static gridDimensions;
@@ -14,10 +15,7 @@ export default class Node {
     }
 
     getClass(){
-        if ( this.#visited && this.#canAnimate ){
-            return this.#type + ' visited'
-        }
-        return this.#type
+        return this.#type + this.#animationStatus
     }
 
     getId(){
@@ -28,13 +26,28 @@ export default class Node {
         this.#visited = true
         // Animation
         setTimeout(() => {
-            this.#canAnimate = true
+            this.#animationStatus = ' visited'
+            Node.updateBoard()
+        }, 20 * delay)
+    }
+
+    addToPath(delay){
+        setTimeout(() => {
+            this.#animationStatus = ' path'
             Node.updateBoard()
         }, 20 * delay)
     }
 
     isVisited(){
         return this.#visited === true
+    }
+
+    getPrevious(){
+        return this.#previousNode
+    }
+
+    setPrevious(prev){
+        this.#previousNode = prev
     }
 
     getNeighbors(){

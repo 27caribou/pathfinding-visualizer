@@ -62,3 +62,7 @@
 .cell.visited {
   background-color: darkcyan;
 }
+
+.cell.path {
+  background-color: yellow;
+}

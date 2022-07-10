@@ -10,7 +10,7 @@ const Board = () => {
     const [ rows, setRows ] = useState(15)
     const [ cols, setCols ] = useState(50)
     const [ start, setStart ] = useState([7, 12])
-    const [ destination, setDestination ] = useState([7, 27])
+    const [ destination, setDestination ] = useState([4, 22])
 
     useEffect(() => {
         let arr = []
@@ -52,7 +52,24 @@ const Board = () => {
 
     const findPath = () => {
         let start = document.querySelector('.cell.start').id
-        BFS( start, getNode )
+        let solution = BFS( start, getNode )
+
+        if ( solution.length === 0 ){
+            console.log('Not found')
+            return
+        }
+
+        // Trace path found
+        let currentNode = solution[0]
+        let path = []
+        while ( currentNode != null ){
+            path.push( currentNode )
+            currentNode = currentNode.getPrevious()
+        }
+        for ( let i = path.length - 1; i >= 0; i--) {
+            path[i].addToPath( solution[1]++ )
+        }
+
     }
 
     return (
