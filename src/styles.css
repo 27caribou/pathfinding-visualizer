@@ -1,0 +1,64 @@
+:root {
+  --num-rows: 15;
+  --num-cols: 50;
+  --cell-size: 25px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.board {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.header {
+  margin-bottom: 70px;
+}
+
+.find-path {
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--num-cols), var(--cell-size));
+  grid-template-rows: repeat(var(--num-rows), var(--cell-size));
+  width: calc( (var(--num-cols) + 2) * var(--cell-size) + 1px);
+  margin: 0 auto;
+  background: #AFD8F8;
+  border: 1px solid #AFD8F8;
+  column-gap: 1px;
+  row-gap: 1px;
+}
+
+.cell {
+  /*border: 1pt solid #AFD8F8;*/
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*.cell.start, .cell.destination {*/
+/*fill: #728fc9;*/
+/* Make square look bigger */
+/*box-shadow: 1px 0 red, 0 1px red, -1px 0 red, 0 -1px red,*/
+/*            1px -1px red, 1px 1px red, -1px -1px red, -1px 1px red;*/
+/*}*/
+
+.cell.start {
+  background-color: lightsalmon;
+}
+
+.cell.destination {
+  background-color: lightgreen;
+}
+
+.cell.visited {
+  background-color: darkcyan;
+}
