@@ -20,7 +20,7 @@
 }
 
 .find-path {
-  margin-bottom: 20px;
+  margin: 20px 0;
   padding: 10px;
 }
 
@@ -28,20 +28,23 @@
   display: grid;
   grid-template-columns: repeat(var(--num-cols), var(--cell-size));
   grid-template-rows: repeat(var(--num-rows), var(--cell-size));
-  width: calc( (var(--num-cols) + 2) * var(--cell-size) + 1px);
+  column-gap: 1px;
+  row-gap: 1px;
+  width: 1500px;
+  height: calc( var(--num-rows) * var(--cell-size) + ( 1px * var(--num-rows) ) + 1px );
+  width: calc( var(--num-cols) * var(--cell-size) + ( 1px * var(--num-cols) ) + 1px );
+
   margin: 0 auto;
   background: #AFD8F8;
   border: 1px solid #AFD8F8;
-  column-gap: 1px;
-  row-gap: 1px;
 }
 
 .cell {
-  /*border: 1pt solid #AFD8F8;*/
+  /*border: 1pt solid darkcyan;*/
   background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /*display: flex;*/
+  /*align-items: center;*/
+  /*justify-content: center;*/
 }
 
 /*.cell.start, .cell.destination {*/
@@ -57,6 +60,10 @@
 
 .cell.destination {
   background-color: lightgreen;
+}
+
+.cell.wall {
+  background-color: #343b42;
 }
 
 .cell.visited {

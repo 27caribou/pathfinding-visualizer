@@ -14,6 +14,15 @@ export default class Node {
         this.#type = type
     }
 
+    setType(type){
+        this.#type = type
+        Node.updateBoard()
+    }
+
+    getType(){
+        return this.#type
+    }
+
     getClass(){
         return this.#type + this.#animationStatus
     }
