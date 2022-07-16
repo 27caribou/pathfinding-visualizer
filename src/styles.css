@@ -30,7 +30,6 @@
   grid-template-rows: repeat(var(--num-rows), var(--cell-size));
   column-gap: 1px;
   row-gap: 1px;
-  width: 1500px;
   height: calc( var(--num-rows) * var(--cell-size) + ( 1px * var(--num-rows) ) + 1px );
   width: calc( var(--num-cols) * var(--cell-size) + ( 1px * var(--num-cols) ) + 1px );
 
@@ -40,7 +39,7 @@
 }
 
 .cell {
-  /*border: 1pt solid darkcyan;*/
+  /*border: 1px solid #AFD8F8;*/
   background: white;
   /*display: flex;*/
   /*align-items: center;*/
@@ -54,20 +53,20 @@
 /*            1px -1px red, 1px 1px red, -1px -1px red, -1px 1px red;*/
 /*}*/
 
-.cell.start {
-  background-color: lightsalmon;
-}
-
-.cell.destination {
-  background-color: lightgreen;
-}
-
 .cell.wall {
   background-color: #343b42;
 }
 
 .cell.visited {
   background-color: darkcyan;
+}
+
+.cell.start {
+  background-color: lightsalmon;
+}
+
+.cell.destination {
+  background-color: lightgreen;
 }
 
 .cell.path {

@@ -5,6 +5,7 @@ export default class Node {
     #visited = false
     #previousNode = null
     #animationStatus = ''
+    #distanceFromDestination;
 
     static updateBoard;
     static gridDimensions;
@@ -16,7 +17,6 @@ export default class Node {
 
     setType(type){
         this.#type = type
-        Node.updateBoard()
     }
 
     getType(){
@@ -24,7 +24,7 @@ export default class Node {
     }
 
     getClass(){
-        return this.#type + this.#animationStatus
+        return `cell ${this.#type} ${this.#animationStatus}`
     }
 
     getId(){
@@ -35,14 +35,14 @@ export default class Node {
         this.#visited = true
         // Animation
         setTimeout(() => {
-            this.#animationStatus = ' visited'
+            this.#animationStatus = 'visited'
             Node.updateBoard()
         }, 20 * delay)
     }
 
     addToPath(delay){
         setTimeout(() => {
-            this.#animationStatus = ' path'
+            this.#animationStatus = 'path'
             Node.updateBoard()
         }, 20 * delay)
     }
@@ -57,6 +57,18 @@ export default class Node {
 
     setPrevious(prev){
         this.#previousNode = prev
+    }
+
+    setDistance(target){
+        let distance = Math.abs(this.#coords[0] - target[0] ) + Math.abs(this.#coords[1] - target[1] )
+        this.#distanceFromDestination = distance
+    }
+
+    getValue(type){
+        if ( type === 'distance' ){
+            return this.#distanceFromDestination
+        }
+        return -1
     }
 
     getNeighbors(){
