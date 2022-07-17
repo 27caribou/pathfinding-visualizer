@@ -6,9 +6,11 @@ export default class Node {
     #previousNode = null
     #animationStatus = ''
     #distanceFromDestination;
+    #cost = 1;
 
     static updateBoard;
     static gridDimensions;
+    static timeOUT = 20
 
     constructor(coords, type = 'regular') {
         this.#coords = coords
@@ -37,14 +39,14 @@ export default class Node {
         setTimeout(() => {
             this.#animationStatus = 'visited'
             Node.updateBoard()
-        }, 20 * delay)
+        }, Node.timeOUT * delay)
     }
 
     addToPath(delay){
         setTimeout(() => {
             this.#animationStatus = 'path'
             Node.updateBoard()
-        }, 20 * delay)
+        }, Node.timeOUT * delay)
     }
 
     isVisited(){
@@ -67,8 +69,22 @@ export default class Node {
     getValue(type){
         if ( type === 'distance' ){
             return this.#distanceFromDestination
+        } else if ( type === 'cost' ){
+            return this.#cost
         }
         return -1
+    }
+
+    getCost(){
+        return this.#cost
+    }
+
+    setCost(cost){
+        this.#cost = cost
+    }
+
+    setCumulativeCost(prevCost) {
+        this.#cost = prevCost + this.#cost
     }
 
     getNeighbors(){

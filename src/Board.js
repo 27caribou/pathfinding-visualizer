@@ -1,9 +1,9 @@
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import Node from "./Node";
 import BFS from "./BFS";
 import DFS from "./DFS";
-import Heap from "./Heap";
 import Greedy from "./Greedy";
+import UCS from "./UCS";
 
 const Board = () => {
 
@@ -11,9 +11,8 @@ const Board = () => {
     const [ rows, setRows ] = useState(15)
     const [ cols, setCols ] = useState(50)
     const [ visits, setVisits ] = useState(0)
-    const [ algo, setAlgo ] = useState('greedy')
+    const [ algo, setAlgo ] = useState('ucs')
     const [ dragType, setDragType ] = useState('')
-
 
     useEffect(() => {
         Node.updateBoard = function () { setVisits( x => x + 1 ) }
@@ -24,48 +23,83 @@ const Board = () => {
 
     useEffect(() => {
         if ( dragType === '' ) return
+        let mouseIsDown = false
 
         const handleMouseEnter = e => {
-            let node = getNode( e.target.id )
-            let type = node.getType()
+            if ( e.target.classList.contains('start') || e.target.classList.contains('destination') ) return
+            let currentNode = getNode( e.target.id )
 
-            if ( dragType === 'wall' ){
-                if ( type === 'start' || type === 'destination' ) return
-
-                if ( type === 'wall' ){
-                    node.setType('regular')
-                } else {
-                    node.setType(dragType)
+            if ( ( dragType === 'weight' || dragType === 'wall' ) && mouseIsDown ){
+                e.target.classList.replace(currentNode.getType(), dragType)
+                currentNode.setType( dragType )
+                if ( dragType === 'weight' ){
+                    currentNode.setCost(10)
                 }
+
             } else {
-                if ( ( dragType === 'start' && type == 'destination' ) || ( dragType === 'destination' && type == 'start' ) ) return;
-
-                let prev = document.querySelector(`.cell.${dragType}`)
-                if ( prev != null ){ // faster than re-render
+                let prev = document.querySelector(`.cell.${dragType}-hover`)
+                if ( prev !== null ){
                     let prevNode = getNode( prev.id )
-                    prevNode.setType('regular')
-                    node.setType(dragType)
-                    prev.classList.remove(dragType)
+                    prev.classList.replace(`${dragType}-hover`, prevNode.getType())
                 }
-            }
 
-            Node.updateBoard()
+                e.target.classList.replace(currentNode.getType(), `${dragType}-hover`)
+            }
+        }
+        const handleClick = (e) => {
+            if ( e.target.classList.contains('start') || e.target.classList.contains('destination') ) return
+
+            let currentNode = getNode( e.target.id )
+            currentNode.setType( dragType )
+            setDragType('')
+        }
+        const handleMouseDown = (e) => {
+            mouseIsDown = true
+            let currentNode = getNode( e.target.id )
+            currentNode.setType( dragType )
+
+            if ( dragType === 'weight' ){
+                currentNode.setCost(10)
+            }
+            e.target.classList.replace(`${dragType}-hover`, dragType)
+        }
+        const handleMouseUp = () => {
+            mouseIsDown = false
+            setDragType('')
         }
 
-        // TURN FIRST TO WALL?
+        // Already set them to hover
+        if ( dragType === 'start' || dragType === 'destination' ){
+            let start = document.querySelector(`.cell.${dragType}`)
+
+            let currentNode = getNode( start.id )
+            currentNode.setType( 'regular' )
+
+            start.classList.replace(dragType, `${dragType}-hover`)
+        }
+
         document.querySelectorAll('.cell').forEach( cell => {
             cell.addEventListener( 'mouseenter', handleMouseEnter )
+            if ( dragType === 'weight' || dragType === 'wall' ){
+                cell.addEventListener( 'mousedown', handleMouseDown )
+                cell.addEventListener( 'mouseup', handleMouseUp )
+            } else {
+                cell.addEventListener( 'click', handleClick )
+            }
         })
 
         return () => {
             document.querySelectorAll('.cell').forEach( cell => {
                 cell.removeEventListener( 'mouseenter', handleMouseEnter )
+                if ( dragType === 'weight' || dragType === 'wall' ){
+                    cell.removeEventListener( 'mousedown', handleMouseDown )
+                    cell.removeEventListener( 'mouseup', handleMouseUp )
+                } else {
+                    cell.removeEventListener( 'click', handleClick )
+                }
             })
-            setVisits(0)
         }
     }, [dragType])
-
-    useEffect(() => updateHeuristics(), [algo])
 
     const getNode = (pos) => {
         let index
@@ -97,6 +131,8 @@ const Board = () => {
             solution = DFS( start, getNode )
         } else if ( algo === 'greedy' ){
             solution = Greedy( start, getNode )
+        } else if ( algo === 'ucs' ){
+            solution = UCS( start, getNode )
         }
 
         if ( solution.length === 0 ){
@@ -144,26 +180,32 @@ const Board = () => {
 
     const updateHeuristics = () => {
         // let destination = document.querySelector('.cell.destination').id
-        // for (let node of nodes) {
+        // for ( let node of nodes ) {
         //     node.setDistance(destination)
         // }
         console.log('update heuristic')
-    }
-
-    const handleMouseDown = e => {
-        let classes = e.target.classList
-
-        if ( classes.contains('regular') ) {
-            setDragType('wall')
-        } else {
-            setDragType(classes[1])
-        }
     }
 
     return (
         <div className="board">
             <h2 className="header">Welcome A "Board" HAHA</h2>
             <p><button className="clear-path" onClick={clearBoard}>Clear Board</button></p>
+            <br/>
+            <p><select className="change-algorithm" onChange={e => setAlgo(e.target.value)}>
+                <option value="ucs">UCS</option>
+                <option value="greedy">Greedy</option>
+                <option value="dfs">DFS</option>
+                <option value="bfs">BFS</option>
+            </select></p>
+            <br/>
+            <p><button onClick={() => setDragType('weight')}>Add Weight</button></p>
+            <br/>
+            <p><button onClick={() => setDragType('wall')}>Add Wall</button></p>
+            <br/>
+            <p><button onClick={() => setDragType('start')}>Change Start</button></p>
+            <br/>
+            <p><button onClick={() => setDragType('destination')}>Change Destination</button></p>
+
             <p><button className="find-path" onClick={findPath}>Find destination</button></p>
 
             <div className="grid">
@@ -171,8 +213,6 @@ const Board = () => {
                     key={ index }
                     className={ node.getClass() }
                     id={ node.getId() }
-                    onMouseDown={ handleMouseDown }
-                    onMouseUp={ () => setDragType('') }
                 ></div> ) }
             </div>
         </div>

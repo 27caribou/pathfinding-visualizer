@@ -16,7 +16,7 @@
 }
 
 .header {
-  margin-bottom: 70px;
+  margin-bottom: 30px;
 }
 
 .find-path {
@@ -41,32 +41,56 @@
 .cell {
   /*border: 1px solid #AFD8F8;*/
   background: white;
-  /*display: flex;*/
-  /*align-items: center;*/
-  /*justify-content: center;*/
 }
 
 /*.cell.start, .cell.destination {*/
-/*fill: #728fc9;*/
 /* Make square look bigger */
 /*box-shadow: 1px 0 red, 0 1px red, -1px 0 red, 0 -1px red,*/
 /*            1px -1px red, 1px 1px red, -1px -1px red, -1px 1px red;*/
 /*}*/
 
-.cell.wall {
-  background-color: #343b42;
-}
 
 .cell.visited {
   background-color: darkcyan;
 }
 
-.cell.start {
-  background-color: lightsalmon;
+@keyframes blink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 1; }
 }
 
-.cell.destination {
-  background-color: lightgreen;
+.cell.wall:after, .cell.wall-hover:after,
+.cell.weight:after, .cell.weight-hover:after,
+.cell.start:after, .cell.start-hover:after,
+.cell.destination:after, .cell.destination-hover:after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.cell.wall:after, .cell.wall-hover:after {
+  background-color: #343b42;
+}
+
+.cell.weight:after, .cell.weight-hover:after {
+  background-image: url("./anchor.svg");
+}
+
+.cell.start:after, .cell.start-hover:after {
+  background-image: url("./mouse-pointer.svg");
+}
+
+.cell.destination:after, .cell.destination-hover:after {
+  background-image: url("./target.svg");
+}
+
+.cell.start-hover:after, .cell.destination-hover:after, .cell.wall-hover {
+  animation-name: blink;
+  animation-duration: 0.7s;
+  animation-iteration-count: infinite;
 }
 
 .cell.path {
