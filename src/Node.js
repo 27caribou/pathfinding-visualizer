@@ -6,7 +6,7 @@ export default class Node {
     #previousNode = null
     #animationStatus = ''
     #distanceFromDestination;
-    #cost = 1;
+    #cost = 2;
 
     static updateBoard;
     static gridDimensions;
@@ -31,6 +31,10 @@ export default class Node {
 
     getId(){
         return `${ this.#coords[0] }-${ this.#coords[1] }`
+    }
+
+    getPos(){
+        return this.#coords
     }
 
     visit(delay){
@@ -61,9 +65,16 @@ export default class Node {
         this.#previousNode = prev
     }
 
+    clear(){
+        this.#previousNode = null
+        this.#visited = false
+        console.log('cleared')
+    }
+
     setDistance(target){
+        // Manhattan Distance
         let distance = Math.abs(this.#coords[0] - target[0] ) + Math.abs(this.#coords[1] - target[1] )
-        this.#distanceFromDestination = distance
+        this.#distanceFromDestination = distance * 2
     }
 
     getValue(type){
@@ -71,6 +82,10 @@ export default class Node {
             return this.#distanceFromDestination
         } else if ( type === 'cost' ){
             return this.#cost
+        } else if ( type === 'astar' ){
+            return this.#cost + ( this.#distanceFromDestination * this.#cost ) / this.#cost
+        } else if ( type === 'heuristic' ){
+            return ( this.#distanceFromDestination * this.#cost ) / this.#cost
         }
         return -1
     }

@@ -4,6 +4,7 @@ import BFS from "./BFS";
 import DFS from "./DFS";
 import Greedy from "./Greedy";
 import UCS from "./UCS";
+import AStar from "./AStar";
 
 const Board = () => {
 
@@ -11,7 +12,7 @@ const Board = () => {
     const [ rows, setRows ] = useState(15)
     const [ cols, setCols ] = useState(50)
     const [ visits, setVisits ] = useState(0)
-    const [ algo, setAlgo ] = useState('ucs')
+    const [ algo, setAlgo ] = useState('astar')
     const [ dragType, setDragType ] = useState('')
 
     useEffect(() => {
@@ -51,6 +52,13 @@ const Board = () => {
 
             let currentNode = getNode( e.target.id )
             currentNode.setType( dragType )
+            if ( dragType === 'destination' ) {
+                let newDestination = currentNode.getPos()
+                for ( let node of nodes ) {
+                    node.setDistance( newDestination )
+                }
+            }
+
             setDragType('')
         }
         const handleMouseDown = (e) => {
@@ -133,6 +141,8 @@ const Board = () => {
             solution = Greedy( start, getNode )
         } else if ( algo === 'ucs' ){
             solution = UCS( start, getNode )
+        } else if ( algo === 'astar' ){
+            solution = AStar( start, getNode )
         }
 
         if ( solution.length === 0 ){
@@ -178,22 +188,15 @@ const Board = () => {
         setVisits(0)
     }
 
-    const updateHeuristics = () => {
-        // let destination = document.querySelector('.cell.destination').id
-        // for ( let node of nodes ) {
-        //     node.setDistance(destination)
-        // }
-        console.log('update heuristic')
-    }
-
     return (
         <div className="board">
             <h2 className="header">Welcome A "Board" HAHA</h2>
             <p><button className="clear-path" onClick={clearBoard}>Clear Board</button></p>
             <br/>
-            <p><select className="change-algorithm" onChange={e => setAlgo(e.target.value)}>
+            <p><select className="change-algorithm" onChange={e => setAlgo(e.target.value)} value={algo}>
                 <option value="ucs">UCS</option>
                 <option value="greedy">Greedy</option>
+                <option value="astar">A*</option>
                 <option value="dfs">DFS</option>
                 <option value="bfs">BFS</option>
             </select></p>

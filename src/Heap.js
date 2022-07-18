@@ -30,7 +30,10 @@ export default class Heap {
     }
 
     #getValue(i) {
-        return this.#data[i].getValue( this.#valueType )
+        if ( !Array.isArray( this.#data[i] ) ){
+            return this.#data[i].getValue( this.#valueType )
+        }
+        return this.#data[i][0]
     }
 
     #swap(i1, i2){
@@ -58,9 +61,15 @@ export default class Heap {
     }
 
     pop(){
+        if ( this.#data.length === 0 ) return null
+
         let minValue = this.#data[0]
-        this.#data[0] = this.#data.pop()
-        this.#heapifyDown()
+        if ( this.#data.length === 1 ){
+            this.#data.pop()
+        } else {
+            this.#data[0] = this.#data.pop()
+            this.#heapifyDown()
+        }
 
         return minValue
     }
