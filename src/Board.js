@@ -8,9 +8,12 @@ import AStar from "./AStar";
 
 const Board = () => {
 
+    /**
+     * CREATE A STATIC FUNCTION AND/OR VARIABLE THAT EVERY NODE USES WHEN VISITING
+     */
     const [ nodes, setNodes ] = useState([])
     const [ rows, setRows ] = useState(15)
-    const [ cols, setCols ] = useState(50)
+    const [ cols, setCols ] = useState(51)
     const [ visits, setVisits ] = useState(0)
     const [ algo, setAlgo ] = useState('astar')
     const [ dragType, setDragType ] = useState('')
@@ -188,6 +191,81 @@ const Board = () => {
         setVisits(0)
     }
 
+    const createRecursiveMaze = () => {
+        for ( let i = 0; i < rows; i++ ) {
+            for (let j = 0; j < cols; j++) {
+                let node = getNode([i,j])
+
+                if ( node.getType() === 'start' || node.getType() === 'destination' ) continue
+                if (
+                    ( i === 0 ) || ( i === rows - 1 ) ||
+                    ( j === 0 ) || ( j === cols - 1 ) ||
+                    ( i % 2 === 0 ) || ( (i + j) % 2 === 1 )
+                ){
+                    node.setType('wall')
+                }
+            }
+        }
+        Node.updateBoard()
+
+        const getOptions = (pos) => {
+            let neighbors = []
+            if ( pos[0] - 2 >= 0 ){
+                neighbors.push([ pos[0] - 2, pos[1] ])
+            }
+            if ( pos[1] + 2 < cols ){
+                neighbors.push([ pos[0], pos[1] + 2 ])
+            }
+            if ( pos[0] + 2 < rows ){
+                neighbors.push([ pos[0] + 2, pos[1] ])
+            }
+            if ( pos[1] - 2 >= 0 ){
+                neighbors.push([ pos[0], pos[1] - 2 ])
+            }
+
+            return neighbors
+        }
+
+        // Potentially change where it starts from
+        // Create Weight Maze
+        // Also add way to skew maze vertically/horizontally
+        const recurse = (current, count) => {
+            // Visit current node
+            getNode(current).visit(++count)
+            // Get unvisited neighbors
+            let unvisited = getOptions(current).filter( i => !getNode(i).isVisited() )
+            while ( unvisited.length !== 0 ){
+                // Choose one randomly
+                let selected = unvisited[ Math.floor(Math.random() * unvisited.length) ]
+                // Break down the wall between current and selected
+                let wallPos = [ (selected[0] - current[0])/2, (selected[1] - current[1])/2 ]
+                let wall = getNode([ current[0] + wallPos[0], current[1] + wallPos[1]])
+                wall.setType('regular')
+                wall.visit(++count)
+
+                recurse(selected)
+                // Update list
+                unvisited = unvisited.filter( i => !getNode(i).isVisited() )
+            }
+        }
+        recurse([1,1], 0)
+    }
+
+    const createRandomMaze = () => {
+        for ( let i = 0; i < rows; i++ ) {
+            for (let j = 0; j < cols; j++) {
+                let node = getNode([i,j])
+                if ( node.getType() === 'start' || node.getType() === 'destination' ) continue
+
+                // Changing number makes more sparse/dense
+                if ( Math.floor(Math.random() * 4) === 1 ){
+                    node.setType('wall')
+                }
+            }
+        }
+        Node.updateBoard()
+    }
+
     return (
         <div className="board">
             <h2 className="header">Welcome A "Board" HAHA</h2>
@@ -208,6 +286,11 @@ const Board = () => {
             <p><button onClick={() => setDragType('start')}>Change Start</button></p>
             <br/>
             <p><button onClick={() => setDragType('destination')}>Change Destination</button></p>
+
+            <br/>
+            <p><button onClick={createRecursiveMaze}>Create Maze</button></p>
+            <br/>
+            <p><button onClick={createRandomMaze}>Create Basic Random Maze</button></p>
 
             <p><button className="find-path" onClick={findPath}>Find destination</button></p>
 
