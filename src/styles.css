@@ -76,7 +76,7 @@
 }
 
 .cell.weight:after, .cell.weight-hover:after {
-  background-image: url("./anchor.svg");
+  background-image: url("./images/anchor.svg");
 }
 
 .cell.start:after, .cell.start-hover:after {

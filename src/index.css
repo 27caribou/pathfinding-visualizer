@@ -1,4 +1,7 @@
 
+
+/* GENERAL */
+
 * {
     margin: 0;
     padding: 0;
@@ -8,12 +11,17 @@
 body {
     background-color: #E7E7E7;
     color: #323332;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 li {
     list-style-type: none;
 }
+
+/* GENERAL - END */
+
+
+/* NAVIGATION */
 
 .header, .navbar {
     text-align: center;
@@ -46,7 +54,82 @@ li {
 .option {
     padding: 1rem;
     min-width: 100px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.option:hover {
+    background-color: #545454;
 }
 
+/* NAVIGATION - END */
+
+
+/* CONTROL BOARD */
+
+.control-board {
+    padding: 2.2rem 3rem 2rem;
+}
+.control-board > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.control-board > p {
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.legend h3 {
+    margin-bottom: 1rem;
+}
+
+.item-list {
+    display: flex;
+    /*font-size: 0.9rem;*/
+}
+.item-list .item:not(:first-child) {
+    margin-left: 2rem;
+}
+
+.item .desc {
+    padding: 0.8rem;
+    border: 1px solid #343b42;
+    display: flex;
+    align-items: center;
+}
+
+.item .desc .symbol {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 1rem;
+}
+
+
+.start.symbol {
+    background-image: url("./images/navigation.svg");
+}
+.target.symbol {
+    background-image: url("./images/flag.svg");
+}
+.weight.symbol {
+    background-image: url("./images/anchor.svg");
+}
+.wall.symbol {
+    background-color: #676767;
+}
+.visited.symbol {
+    border: 1px solid #343b42;
+}
+.shortest-path.symbol {
+    border: 1px solid #343b42;
+}
+
+
+.find-path {
+    padding: 0.8rem;
+}
+
+/* CONTROL BOARD - END */
 
 
