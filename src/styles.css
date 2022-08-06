@@ -30,8 +30,8 @@
   grid-template-rows: repeat(var(--num-rows), var(--cell-size));
   column-gap: 1px;
   row-gap: 1px;
-  height: calc( var(--num-rows) * var(--cell-size) + ( 1px * var(--num-rows) ) + 1px );
-  width: calc( var(--num-cols) * var(--cell-size) + ( 1px * var(--num-cols) ) + 1px );
+  height: calc( var(--num-rows) * var(--cell-size) + ( 1px * var(--num-rows) ) - 1px );
+  width: calc( var(--num-cols) * var(--cell-size) + ( 1px * var(--num-cols) ) - 1px );
 
   margin: 0 auto;
   background: #AFD8F8;
