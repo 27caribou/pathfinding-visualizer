@@ -1,63 +1,48 @@
-import Board from "./Board";
+import Board from "./components/Board";
 import { useEffect, useState } from "react";
+import getResponsiveGridSize from "./GridChange";
 
 const App = () => {
 
-    const [ size, setSize ] = useState([17,53])
+    const [ size, setSize ] = useState( getResponsiveGridSize( window.innerWidth ) )
 
     useEffect(() => {
 
         const changeSize = (e) => {
-            let rows, cols
-
-            // From index.css
-            if ( e.target.innerWidth <= 805 ) {
-                rows = 9
-                cols = 25
-            } else if ( e.target.innerWidth <= 864 ) {
-                rows = 11
-                cols = 27
-            } else if ( e.target.innerWidth <= 1000 ) {
-                rows = 11
-                cols = 29
-            } else if ( e.target.innerWidth <= 1150 ) {
-                rows = 13
-                cols = 33
-            } else if ( e.target.innerWidth <= 1280 ) {
-                rows = 13
-                cols = 39
-            } else if ( e.target.innerWidth <= 1440 ) {
-                rows = 15
-                cols = 41
-            } else if ( e.target.innerWidth <= 1570 ) {
-                rows = 17
-                cols = 47
-            } else {
-                rows = 17
-                cols = 53
-            }
+            let size = getResponsiveGridSize(e)
 
             // Re-render only if different
-            setSize( prev => ( prev[0] === rows && prev[1] === cols ) ? prev : [ rows, cols ] )
+            setSize( prev => ( prev[0] === size[0] && prev[1] === size[1] ) ? prev : size )
         }
         window.addEventListener("resize", changeSize)
 
         return () => {
             window.removeEventListener("resize", changeSize)
         }
-
     }, [])
 
+    const navOptions = {
+        'Algorithms': [ 'UCS', 'Greedy', 'Astar', 'DFS', 'BFS' ],
+        'Maze Patterns': [ 'Pattern 1', 'Pattern 2', 'Pattern 3' ],
+        'Clear Board': [],
+        'Clear Path': [],
+        'Speed': [ 'Fast', 'Normal', 'Slow' ]
+    }
     const navigation = <section className="navigation">
         <div className="header">Pathfinding Visualizer</div>
         <div className="navbar">
             <div className="navbar-inner">
-                <span className="option">Algorithms</span>
-                <span className="option">Maze Patterns</span>
-                <span className="option">Board Dimensions</span>
-                <span className="option">Clear Board</span>
-                <span className="option">Clear Path</span>
-                <span className="option">Speed</span>
+                { Object.entries(navOptions).map( ([ key, value ]) => {
+                    return <span className="option">
+                        { key }
+                        { value.length > 0
+                            ? <ul className="dropdown">
+                                { value.map( x => <li>{x}</li>) }
+                            </ul>
+                            : ''
+                        }
+                    </span>
+                }) }
             </div>
         </div>
     </section>
