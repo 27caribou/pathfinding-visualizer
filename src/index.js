@@ -7,8 +7,10 @@ import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    {/*<BoardOld />*/}
-    <App />
-  </React.StrictMode>
+    <>
+        {/*<React.StrictMode>*/}
+            {/*<BoardOld />*/}
+            <App />
+        {/*</React.StrictMode>*/}
+    </>
 );
