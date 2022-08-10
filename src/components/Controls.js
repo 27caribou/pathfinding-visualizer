@@ -1,5 +1,5 @@
 
-const Controls = () => {
+const Controls = ({ start, drag }) => {
     let controls = ['Start', 'Target', 'Weight', 'Wall', 'Visited', 'Shortest-path']
 
     return (
@@ -9,7 +9,10 @@ const Controls = () => {
                 <ul className="item-list">
                     { controls.map( x => {
                         return  (
-                            <li key={x} className="item">
+                            <li
+                                key={x} className="item"
+                                onClick={ () => { if ( !['Visited', 'Shortest-path'].includes(x) ) drag(x.toLowerCase()) } }
+                            >
                                 <div className="desc">
                                     <span className={ x.toLowerCase() + " symbol" }></span>
                                     {x} Node
@@ -18,7 +21,7 @@ const Controls = () => {
                         )
                     }) }
                     <li>
-                        <button className="find-path">Find Path!</button>
+                        <button className="find-path" onClick={ () => start() }>Find Path!</button>
                     </li>
                 </ul>
             </div>

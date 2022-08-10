@@ -5,22 +5,40 @@ export default class Cell {
     #visited = false
     #previous = null
     #cost = 1
-    #inAnimationQueue = false // Animation related
     #animationType = ''
 
     static gridDimensions;
+    static updateBoard
 
     constructor( pos, type = 'regular' ) {
         this.#position = pos
         this.#type = type
     }
 
-    getClass(){
-        return `cell ${this.#type}`
+    getClass() { return `cell ${this.#type} ${this.#animationType}` }
+
+    getId() { return `${ this.#position[0] }-${ this.#position[1] }` }
+
+    setType(type) { this.#type = type }
+
+    getType() { return this.#type }
+
+    getPos() { return this.#position }
+
+    #animateCell( order, type ) {
+        setTimeout(() => {
+            this.#animationType = type
+            Cell.updateBoard()
+        }, 50 * order )
     }
 
-    getId(){
-        return `${ this.#position[0] }-${ this.#position[1] }`
+    visit( order ) {
+        this.#visited = true
+        this.#animateCell( order, 'visited' )
+    }
+
+    addToPath( order ) {
+        this.#animateCell( order, 'path' )
     }
 
 }

@@ -1,4 +1,5 @@
 import Cell from "./components/Cell";
+import { useState } from "react";
 
 function getResponsiveGridSize(e) {
     let width, rows, cols
@@ -41,7 +42,7 @@ function getResponsiveGridSize(e) {
 function newBoard(size) {
     let arr = []
     let start = [ Math.floor(size[0]/2), Math.floor(size[1]/4) ]
-    let destination = [ Math.floor(size[0]/2), Math.floor(3*size[1]/4) ]
+    let target = [ Math.floor(size[0]/2), Math.floor(3*size[1]/4) ]
 
     for ( let i = 0; i < size[0]; i++ ) {
         for ( let j = 0; j < size[1]; j++ ) {
@@ -49,8 +50,8 @@ function newBoard(size) {
             let type
             if ( i === start[0] && j === start[1] ){
                 type = 'start'
-            } else if ( i === destination[0] && j === destination[1] ){
-                type = 'destination'
+            } else if ( i === target[0] && j === target[1] ){
+                type = 'target'
             } else {
                 type = 'regular'
             }
@@ -61,5 +62,10 @@ function newBoard(size) {
     return arr
 }
 
+// Custom forceUpdate hook
+function useForceUpdate() {
+    const [ value, setValue ] = useState(0);
+    return () => setValue(value => value + 1);
+}
 
-export { getResponsiveGridSize, newBoard }
+export { getResponsiveGridSize, newBoard, useForceUpdate }
