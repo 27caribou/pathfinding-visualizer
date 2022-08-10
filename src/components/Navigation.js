@@ -9,7 +9,7 @@ const Navigation = ({ set, clearBoard }) => {
                     <span className="option">
                         Algorithms
                         <ul className="dropdown">
-                            { [ 'UCS', 'Greedy', 'Astar', 'DFS', 'BFS' ].map( x =>
+                            { [ 'BFS', 'DFS', 'UCS', 'Greedy', 'Astar' ].map( x =>
                                 <li key={x} onClick={ () => set( 'algo', x.toLowerCase() ) }>{x}</li>
                             ) }
                         </ul>
@@ -17,7 +17,7 @@ const Navigation = ({ set, clearBoard }) => {
                     <span className="option">
                         Maze Patterns
                         <ul className="dropdown">
-                            { [ 'Pattern 1', 'Pattern 2', 'Pattern 3' ].map( x =>
+                            { [ 'Recursive Division', 'Random Weights', 'Random Walls' ].map( x =>
                                 <li key={x} onClick={ () => set( 'pattern', x.toLowerCase() ) }>{x}</li>
                             ) }
                         </ul>

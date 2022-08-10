@@ -1,6 +1,10 @@
 
-const Controls = ({ start, drag }) => {
+const Controls = ({ start, drag, algo }) => {
     let controls = ['Start', 'Target', 'Weight', 'Wall', 'Visited', 'Shortest-path']
+    let description = "Pick an algorithm!";
+    if ( algo !== '' ) {
+        description = algo
+    }
 
     return (
         <section className="control-board">
@@ -25,7 +29,7 @@ const Controls = ({ start, drag }) => {
                     </li>
                 </ul>
             </div>
-            <p className="algorithm-description">Pick an algorithm!</p>
+            <p className="algorithm-description">{description}</p>
         </section>
     )
 }

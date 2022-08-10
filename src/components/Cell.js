@@ -5,7 +5,7 @@ export default class Cell {
     #visited = false
     #previous = null
     #cost = 1
-    #animationType = ''
+    #searchStatus = ''
 
     static gridDimensions;
     static updateBoard
@@ -15,7 +15,7 @@ export default class Cell {
         this.#type = type
     }
 
-    getClass() { return `cell ${this.#type} ${this.#animationType}` }
+    getClass() { return `cell ${this.#type} ${this.#searchStatus}` }
 
     getId() { return `${ this.#position[0] }-${ this.#position[1] }` }
 
@@ -25,20 +25,20 @@ export default class Cell {
 
     getPos() { return this.#position }
 
-    #animateCell( order, type ) {
+    // Acts like the visit and animate functions
+    mark( order, status = 'visited', markVisit = true ) {
+        if ( markVisit ) this.#visited = true
         setTimeout(() => {
-            this.#animationType = type
+            if ( [ 'visited', 'path' ].includes( status ) ) {
+                this.#searchStatus = status
+            } else {
+                this.setType(status)
+            }
+
             Cell.updateBoard()
         }, 50 * order )
     }
 
-    visit( order ) {
-        this.#visited = true
-        this.#animateCell( order, 'visited' )
-    }
-
-    addToPath( order ) {
-        this.#animateCell( order, 'path' )
-    }
+    isVisited() { return this.#visited === true }
 
 }

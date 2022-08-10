@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getResponsiveGridSize, newBoard, useForceUpdate } from "./Functions";
+import { addMazePattern, getResponsiveGridSize, newBoard, useForceUpdate } from "./Functions";
 import Navigation from "./components/Navigation";
 import Controls from "./components/Controls";
 import Cell from "./components/Cell";
@@ -7,7 +7,11 @@ import Cell from "./components/Cell";
 const App = () => {
 
     /**
-     * TO DO: HANDLE WHEN BUTTONS ARE CLICKED DURING ANIMATION & DURING DRAGS (edit mode?)
+     * TO DO:
+     * - HANDLE WHEN BUTTONS ARE CLICKED DURING ANIMATION & DURING DRAGS (edit mode?)
+     * - Potentially change where recursive maze starts from
+     * - Add more forks in maze
+     * - Add way to skew recursive maze vertically/horizontally
      */
 
     const [ size, setSize ] = useState( getResponsiveGridSize( window.innerWidth ) )
@@ -36,10 +40,21 @@ const App = () => {
 
     useEffect(() => {
         setCells( newBoard(size) )
-
         Cell.gridDimensions = size
-        console.log('cleared')
     }, [size])
+
+    useEffect(() => {
+        if ( pattern !== '' ) setCells( newBoard(size) )
+    }, [pattern])
+
+    useEffect(() => {
+        if ( cells.length === 0 ) return
+
+        if ( pattern !== '' ) {
+            addMazePattern( pattern, size, cells, getCell )
+            setPattern('')
+        }
+    }, [cells])
 
     /* HANDLE DRAG EVENTS */
     useEffect(() => {
@@ -155,8 +170,8 @@ const App = () => {
     const setSetting = (key, value) => {
         if ( key === 'algo' ) {
             setAlgo( value )
-        } else if ( key === 'patterns' ){
-            setPattern( value )
+        } else if ( key === 'pattern' ){
+            setPattern( oldValue => value )
         } else {
             setSpeed( value )
         }
@@ -164,7 +179,7 @@ const App = () => {
 
     const findPath = () => {
         for (let i = 0; i < 15; i++) {
-            cells[i].visit(i)
+            cells[i].mark(i)
         }
     }
 
@@ -174,6 +189,7 @@ const App = () => {
             <Controls
                 start={ findPath }
                 drag={ i => setDragType(i) }
+                algo={ algo }
             />
 
             <div className="board">
