@@ -1,13 +1,15 @@
 
- class Heap {
+export default class Heap {
     #data;
-    // USE A SET TO REDUCE CHECK TIME?
     #valueType;
 
-    constructor(valueType) {
+    constructor() {
         this.#data = []
-        this.#valueType = valueType
     }
+
+    // arr() {
+    //     return [ ...this.#data ]
+    // }
 
     #getParentIndex(i) {
         return i === 0 ? i : Math.floor( ( i - 1 ) / 2 )
@@ -25,14 +27,7 @@
         return this.#data.length === 0
     }
 
-    hasItem(item) {
-        return this.#data.includes(item)
-    }
-
     #getValue(i) {
-        if ( !Array.isArray( this.#data[i] ) ){
-            return this.#data[i].getValue( this.#valueType )
-        }
         return this.#data[i][0]
     }
 
@@ -43,6 +38,7 @@
     }
 
     push(item){
+        // [ value, item ]
         this.#data.push(item)
         this.#heapifyUp()
     }

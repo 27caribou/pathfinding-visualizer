@@ -7,7 +7,7 @@ export default class Cell {
     #cost = 1
     #searchStatus = ''
 
-    static gridDimensions;
+    static boardSize;
     static updateBoard
 
     constructor( pos, type = 'regular' ) {
@@ -36,9 +36,13 @@ export default class Cell {
             }
 
             Cell.updateBoard()
-        }, 50 * order )
+        }, 10 * order )
     }
 
     isVisited() { return this.#visited === true }
+
+    setPrevious(prev) { this.#previous = prev }
+
+    getPrevious() { return this.#previous }
 
 }

@@ -236,6 +236,10 @@ li {
     background-color: #879FF1;
 }
 
+.cell.path {
+    background-color: #F2C061;
+}
+
 @keyframes blink {
     0%   { opacity: 1; }
     50%  { opacity: 0; }

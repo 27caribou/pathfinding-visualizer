@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { addMazePattern, getResponsiveGridSize, newBoard, useForceUpdate } from "./Functions";
+import { addMazePattern, getPath, getResponsiveGridSize, newBoard, useForceUpdate } from "./Functions";
 import Navigation from "./components/Navigation";
 import Controls from "./components/Controls";
 import Cell from "./components/Cell";
@@ -40,7 +40,7 @@ const App = () => {
 
     useEffect(() => {
         setCells( newBoard(size) )
-        Cell.gridDimensions = size
+        Cell.boardSize = size
     }, [size])
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const App = () => {
         if ( cells.length === 0 ) return
 
         if ( pattern !== '' ) {
-            addMazePattern( pattern, size, cells, getCell )
+            addMazePattern( pattern, cells, getCell )
             setPattern('')
         }
     }, [cells])
@@ -153,6 +153,7 @@ const App = () => {
     /* HANDLE DRAG EVENTS - END */
 
     const getCell = (pos) => {
+        if ( pos === null ) return null
         let index
 
         if ( Number.isInteger(pos) ){ // Index
@@ -178,8 +179,25 @@ const App = () => {
     }
 
     const findPath = () => {
-        for (let i = 0; i < 15; i++) {
-            cells[i].mark(i)
+        // If there is a cell that has class visited, clear path
+
+        let start = document.querySelector('.cell.start').id
+        let solution = getPath( start, 'bfs', getCell )
+        console.log(solution)
+
+        if ( solution.length === 0 ){
+            console.log('Not found')
+            return
+        }
+        // Retrace path
+        let currentNode = getCell( solution[1] )
+        let path = []
+        while ( currentNode != null ){
+            path.push( currentNode )
+            currentNode = getCell( currentNode.getPrevious() )
+        }
+        for ( let i = path.length - 1; i >= 0; i-- ) {
+            path[i].mark( solution[0]++, 'path' )
         }
     }
 
