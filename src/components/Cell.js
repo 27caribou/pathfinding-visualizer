@@ -36,7 +36,12 @@ export default class Cell {
             }
 
             Cell.updateBoard()
-        }, 10 * order )
+        }, 20 * order )
+    }
+
+    clearVisit() {
+        this.#visited = false
+        this.#searchStatus = ''
     }
 
     isVisited() { return this.#visited === true }

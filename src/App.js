@@ -13,7 +13,6 @@ const App = () => {
      * - Add more forks in maze
      * - Add way to skew recursive maze vertically/horizontally
      */
-
     const [ size, setSize ] = useState( getResponsiveGridSize( window.innerWidth ) )
     const [ cells, setCells ] = useState([])
     const [ algo, setAlgo ] = useState('')
@@ -45,6 +44,7 @@ const App = () => {
 
     useEffect(() => {
         if ( pattern !== '' ) setCells( newBoard(size) )
+
     }, [pattern])
 
     useEffect(() => {
@@ -180,10 +180,10 @@ const App = () => {
 
     const findPath = () => {
         // If there is a cell that has class visited, clear path
+        clearPath()
 
         let start = document.querySelector('.cell.start').id
-        let solution = getPath( start, 'bfs', getCell )
-        console.log(solution)
+        let solution = getPath( start, 'dfs', getCell )
 
         if ( solution.length === 0 ){
             console.log('Not found')
@@ -201,9 +201,20 @@ const App = () => {
         }
     }
 
+    const clearPath = () => {
+        for ( let cell of cells ) {
+            cell.clearVisit()
+            forceUpdate()
+        }
+    }
+
     return (
         <>
-            <Navigation set={ setSetting } clearBoard={ () => setCells( newBoard(size) ) } />
+            <Navigation
+                set={ setSetting }
+                clearBoard={ () => setCells( newBoard(size) ) }
+                clearPath={ clearPath }
+            />
             <Controls
                 start={ findPath }
                 drag={ i => setDragType(i) }

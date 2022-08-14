@@ -1,5 +1,5 @@
 
-const Navigation = ({ set, clearBoard }) => {
+const Navigation = ({ set, clearBoard, clearPath }) => {
 
     return (
         <section className="navigation">
@@ -30,9 +30,7 @@ const Navigation = ({ set, clearBoard }) => {
                             ) }
                         </ul>
                     </span>
-                    <span className="option">
-                        Clear Path
-                    </span>
+                    <span className="option" onClick={clearPath}>Clear Path</span>
                     <span className="option" onClick={clearBoard}>Clear Board</span>
                 </div>
             </div>
