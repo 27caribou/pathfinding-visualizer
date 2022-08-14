@@ -85,10 +85,6 @@ const App = () => {
                     currentCell.setType( dragType )
                 }
 
-                if ( dragType === 'weight' ){
-                    // currentCell.setCost(10)
-                }
-
             } else { // Normal enter
                 let prev = document.querySelector(`.cell.${dragType}-hover`)
                 if ( prev !== null ){
@@ -179,11 +175,10 @@ const App = () => {
     }
 
     const findPath = () => {
-        // If there is a cell that has class visited, clear path
         clearPath()
 
         let start = document.querySelector('.cell.start').id
-        let solution = getPath( start, 'dfs', getCell )
+        let solution = getPath( start, 'ucs', getCell )
 
         if ( solution.length === 0 ){
             console.log('Not found')

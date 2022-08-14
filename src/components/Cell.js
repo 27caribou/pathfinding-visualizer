@@ -19,7 +19,15 @@ export default class Cell {
 
     getId() { return `${ this.#position[0] }-${ this.#position[1] }` }
 
-    setType(type) { this.#type = type }
+    setType(type) {
+        this.#type = type
+
+        if ( type === 'weight' ) {
+            this.#cost = 10
+        } else if ( this.#cost === 10 ) {
+            this.#cost = 1
+        }
+    }
 
     getType() { return this.#type }
 
@@ -49,5 +57,10 @@ export default class Cell {
     setPrevious(prev) { this.#previous = prev }
 
     getPrevious() { return this.#previous }
+
+    setCost(cost) { this.#cost = cost }
+
+    getCost() { return this.#cost }
+
 
 }
