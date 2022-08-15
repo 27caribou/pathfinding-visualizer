@@ -25,8 +25,8 @@ export default class Cell {
 
         if ( type === 'weight' ) {
             this.#cost = 10
-        } else if ( this.#cost === 10 ) {
-            this.#cost = 1
+        } else if ( this.#cost === 50 ) {
+            this.#cost = 50
         }
     }
 
@@ -45,7 +45,7 @@ export default class Cell {
             }
 
             Cell.updateBoard()
-        }, 20 * order )
+        }, 30 * order )
     }
 
     clearVisit() {

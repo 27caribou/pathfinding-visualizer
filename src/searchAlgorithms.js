@@ -124,4 +124,51 @@ function Greedy( start, get ) {
     return []
 }
 
-export { BFS, DFS, UCS, Greedy }
+function Astar( start, get ) {
+    /**
+     * In order for the A* algorithm to return the shortest path, the heuristic must be admissible.
+     * This means the heuristic must never overestimate the cost. Either it underestimates, or it has it completely correct
+     *
+     * Manhattan is admissible so the concept is fine.
+     * But what's the difference between f(x) of 26 (cost=6,heur=20) and 26 (cost=20,heur=6)?
+     * To encourage exploring, I made the cost of visiting a cell be 10, and the heuristic be a multiple of 5, so it
+     * always underestimates
+     */
+
+    let queue = new Heap()
+    let count = 0
+    let value = get( start ).getCost() + get( start ).getDistance()
+    queue.push([ value, start, null ])
+
+    while ( !queue.isEmpty() ){
+        let item = queue.pop()
+        let cell = get( item[1] )
+
+        if ( cell.isVisited() ) continue
+        cell.mark( count++ )
+        cell.setPrevious( item[2] )
+
+        if ( cell.getType() === 'target' ) {
+            return [ count, item[1] ]
+        } else {
+            // Add VALID neighbors to queue
+            let neighbors = getNeighbors( cell.getPos() )
+            for ( let pos of neighbors ) {
+                let neighborCell = get( pos )
+                if ( neighborCell.getType() !== 'wall' && !neighborCell.isVisited() ) {
+                    queue.push([
+                        item[0] - cell.getDistance() + neighborCell.getCost() + neighborCell.getDistance(),
+                        pos,
+                        cell.getPos()
+                    ])
+                }
+            }
+        }
+    }
+
+    // Not found
+    return []
+}
+
+
+export { BFS, DFS, UCS, Greedy, Astar }

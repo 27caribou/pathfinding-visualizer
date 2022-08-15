@@ -49,7 +49,11 @@ function createRecursiveMaze(cells, get) {
             // Break down the wall between current and selected
             let wallPos = [ (selected[0] - current[0])/2, (selected[1] - current[1])/2 ]
             let wall = get([ current[0] + wallPos[0], current[1] + wallPos[1]])
-            wall.mark( ++count, 'regular' )
+            if ( wall.getType() === 'wall' ) {
+                wall.mark( ++count, 'regular' )
+            } else {
+                wall.mark( ++count, wall.getType() )
+            }
 
             recurse( selected, count )
             // Update list

@@ -182,7 +182,7 @@ const App = () => {
         for ( let cell of cells ) {
             let cellPos = cell.getPos()
             cell.setDistance(
-                Math.abs(cellPos[0] - target[0] ) + Math.abs(cellPos[1] - target[1] )
+                Math.abs(cellPos[0] - target[0] ) + Math.abs(cellPos[1] - target[1] ) * 5
             )
         }
     }
@@ -191,10 +191,10 @@ const App = () => {
         clearPath()
 
         let start = document.querySelector('.cell.start').id
-        let solution = getPath( start, 'greedy', getCell )
+        let solution = getPath( start, 'astar', getCell )
 
         if ( solution.length === 0 ){
-            console.log('Not found')
+            console.log('Not found...')
             return
         }
         // Retrace path

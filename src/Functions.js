@@ -1,7 +1,7 @@
 import Cell from "./components/Cell";
 import { useState } from "react";
 import { createRandomMaze, createRecursiveMaze } from "./mazeAlgorithms";
-import { BFS, DFS, UCS, Greedy } from "./searchAlgorithms";
+import { BFS, DFS, UCS, Greedy, Astar } from "./searchAlgorithms";
 
 function getResponsiveGridSize(e) {
     let width, rows, cols
@@ -83,8 +83,10 @@ function getPath( start, algo, get ) {
         return UCS( start, get )
     } else if ( algo === 'greedy' ) {
         return Greedy( start, get )
+    } else if ( algo === 'astar' ) {
+        return Astar( start, get )
     } else {
-        console.log('error')
+        console.log('Error.')
         return []
     }
 }
