@@ -5,6 +5,7 @@ export default class Cell {
     #visited = false
     #previous = null
     #cost = 1
+    #distance;
     #searchStatus = ''
 
     static boardSize;
@@ -62,5 +63,8 @@ export default class Cell {
 
     getCost() { return this.#cost }
 
+    setDistance(distance) { this.#distance = distance }
+
+    getDistance() { return this.#distance }
 
 }

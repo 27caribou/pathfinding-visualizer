@@ -49,6 +49,7 @@ const App = () => {
 
     useEffect(() => {
         if ( cells.length === 0 ) return
+        updateHeuristic()
 
         if ( pattern !== '' ) {
             addMazePattern( pattern, cells, getCell )
@@ -174,11 +175,23 @@ const App = () => {
         }
     }
 
+    const updateHeuristic = () => {
+        let target = document.querySelector('.cell.target').id
+        target = getCell(target).getPos()
+
+        for ( let cell of cells ) {
+            let cellPos = cell.getPos()
+            cell.setDistance(
+                Math.abs(cellPos[0] - target[0] ) + Math.abs(cellPos[1] - target[1] )
+            )
+        }
+    }
+
     const findPath = () => {
         clearPath()
 
         let start = document.querySelector('.cell.start').id
-        let solution = getPath( start, 'ucs', getCell )
+        let solution = getPath( start, 'greedy', getCell )
 
         if ( solution.length === 0 ){
             console.log('Not found')
