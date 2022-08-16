@@ -101,12 +101,7 @@ const App = () => {
 
             let currentCell = getCell( e.target.id )
             currentCell.setType( dragType )
-            if ( dragType === 'target' ) {
-                // let newDestination = currentCell.getPos()
-                // for ( let cell of cells ) {
-                //     cell.setDistance( newDestination )
-                // }
-            }
+            if ( dragType === 'target' ) updateHeuristic( currentCell.getPos() )
 
             setDragType('')
         }
@@ -115,9 +110,6 @@ const App = () => {
             let currentCell = getCell( e.target.id )
             currentCell.setType( dragType )
 
-            // if ( dragType === 'weight' ){
-                // currentCell.setCost(10)
-            // }
             e.target.classList.replace(`${dragType}-hover`, dragType)
         }
         const handleMouseUp = () => {
@@ -175,14 +167,14 @@ const App = () => {
         }
     }
 
-    const updateHeuristic = () => {
-        let target = document.querySelector('.cell.target').id
-        target = getCell(target).getPos()
+    const updateHeuristic = (pos = null) => {
+        if ( pos === null ) pos = document.querySelector('.cell.target').id
+        let target = getCell(pos).getPos()
 
         for ( let cell of cells ) {
             let cellPos = cell.getPos()
-            cell.setDistance(
-                Math.abs(cellPos[0] - target[0] ) + Math.abs(cellPos[1] - target[1] ) * 5
+            cell.setHeuristic(
+                Math.abs(cellPos[0] - target[0] ) + Math.abs(cellPos[1] - target[1] ) * 15
             )
         }
     }

@@ -4,8 +4,8 @@ export default class Cell {
     #type;
     #visited = false
     #previous = null
-    #cost = 1
-    #distance;
+    #cost = 10
+    #heuristic;
     #searchStatus = ''
 
     static boardSize;
@@ -24,9 +24,9 @@ export default class Cell {
         this.#type = type
 
         if ( type === 'weight' ) {
-            this.#cost = 10
-        } else if ( this.#cost === 50 ) {
             this.#cost = 50
+        } else if ( this.#cost === 50 ) {
+            this.#cost = 10
         }
     }
 
@@ -45,7 +45,7 @@ export default class Cell {
             }
 
             Cell.updateBoard()
-        }, 30 * order )
+        }, 60 * order )
     }
 
     clearVisit() {
@@ -63,8 +63,8 @@ export default class Cell {
 
     getCost() { return this.#cost }
 
-    setDistance(distance) { this.#distance = distance }
+    setHeuristic(heuristic) { this.#heuristic = heuristic }
 
-    getDistance() { return this.#distance }
+    getHeuristic() { return this.#heuristic }
 
 }

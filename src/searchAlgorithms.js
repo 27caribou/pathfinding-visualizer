@@ -114,7 +114,7 @@ function Greedy( start, get ) {
             for ( let pos of neighbors ) {
                 let neighborCell = get( pos )
                 if ( neighborCell.getType() !== 'wall' && !neighborCell.isVisited() ) {
-                    queue.push([ neighborCell.getDistance(), pos, cell.getPos() ])
+                    queue.push([ neighborCell.getHeuristic(), pos, cell.getPos() ])
                 }
             }
         }
@@ -137,9 +137,10 @@ function Astar( start, get ) {
 
     let queue = new Heap()
     let count = 0
-    let value = get( start ).getCost() + get( start ).getDistance()
+    let value = get( start ).getCost() + get( start ).getHeuristic()
     queue.push([ value, start, null ])
 
+    // for (let i = 0; i < 70; i++) {
     while ( !queue.isEmpty() ){
         let item = queue.pop()
         let cell = get( item[1] )
@@ -157,10 +158,12 @@ function Astar( start, get ) {
                 let neighborCell = get( pos )
                 if ( neighborCell.getType() !== 'wall' && !neighborCell.isVisited() ) {
                     queue.push([
-                        item[0] - cell.getDistance() + neighborCell.getCost() + neighborCell.getDistance(),
+                        item[0] - cell.getHeuristic() + neighborCell.getCost() + neighborCell.getHeuristic(),
                         pos,
                         cell.getPos()
                     ])
+                    // let i = document.getElementById(`${pos[0]}-${pos[1]}`)
+                    // i.textContent = item[0] - cell.getHeuristic() + neighborCell.getCost() + neighborCell.getHeuristic()
                 }
             }
         }

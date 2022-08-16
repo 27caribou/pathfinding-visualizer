@@ -200,6 +200,8 @@ li {
 
 .cell {
     background-color: #dad5d5;
+    font-size: xx-small;
+    position: relative;
     /*background-color: #c9c9c9;*/
     /*border-radius: 50%;*/
 }
@@ -212,7 +214,6 @@ li {
     display: inline-block;
     width: 100%;
     height: 100%;
-    position: relative;
     background-size: cover;
 }
 
