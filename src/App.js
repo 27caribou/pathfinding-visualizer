@@ -6,19 +6,13 @@ import Cell from "./components/Cell";
 
 const App = () => {
 
-    /**
-     * TO DO:
-     * - HANDLE WHEN BUTTONS ARE CLICKED DURING ANIMATION & DURING DRAGS (edit mode?)
-     * - Potentially change where recursive maze starts from
-     * - Add more forks in maze
-     * - Add way to skew recursive maze vertically/horizontally
-     */
     const [ size, setSize ] = useState( getResponsiveGridSize( window.innerWidth ) )
     const [ cells, setCells ] = useState([])
     const [ algo, setAlgo ] = useState('')
     const [ pattern, setPattern ] = useState('')
-    const [ speed, setSpeed ] = useState(20)
+    const [ speed, setSpeed ] = useState(30)
     const [ dragType, setDragType ] = useState('')
+    const [ editMode, setEditMode ] = useState(true)
     const forceUpdate = useForceUpdate()
 
     useEffect(() => {
@@ -31,6 +25,7 @@ const App = () => {
         window.addEventListener("resize", changeSize)
 
         Cell.updateBoard = forceUpdate
+        Cell.animationSpeed = speed
 
         return () => {
             window.removeEventListener("resize", changeSize)
@@ -44,8 +39,11 @@ const App = () => {
 
     useEffect(() => {
         if ( pattern !== '' ) setCells( newBoard(size) )
-
     }, [pattern])
+
+    useEffect(() => {
+        Cell.animationSpeed = speed
+    }, [speed])
 
     useEffect(() => {
         if ( cells.length === 0 ) return
@@ -180,25 +178,34 @@ const App = () => {
     }
 
     const findPath = () => {
+        if ( !algo ) {
+            console.log('No algorithm selected.')
+            return;
+        }
+        setEditMode(false) // Prevent controls to mess with current path finding
         clearPath()
 
         let start = document.querySelector('.cell.start').id
-        let solution = getPath( start, 'astar', getCell )
+        let solution = getPath( start, algo, getCell )
 
-        if ( solution.length === 0 ){
+        if ( solution[1] === null ){
             console.log('Not found...')
-            return
+        } else {
+            // Retrace path
+            let currentNode = getCell( solution[1] )
+            let path = []
+            while ( currentNode != null ){
+                path.push( currentNode )
+                currentNode = getCell( currentNode.getPrevious() )
+            }
+            for ( let i = path.length - 1; i >= 0; i-- ) {
+                path[i].mark( solution[0]++, 'path' )
+            }
         }
-        // Retrace path
-        let currentNode = getCell( solution[1] )
-        let path = []
-        while ( currentNode != null ){
-            path.push( currentNode )
-            currentNode = getCell( currentNode.getPrevious() )
-        }
-        for ( let i = path.length - 1; i >= 0; i-- ) {
-            path[i].mark( solution[0]++, 'path' )
-        }
+
+        setTimeout(() => {
+            setEditMode(true) // Re-enable controls
+        }, Cell.animationSpeed * solution[0] )
     }
 
     const clearPath = () => {
@@ -214,11 +221,13 @@ const App = () => {
                 set={ setSetting }
                 clearBoard={ () => setCells( newBoard(size) ) }
                 clearPath={ clearPath }
+                editMode={ editMode }
             />
             <Controls
                 start={ findPath }
                 drag={ i => setDragType(i) }
                 algo={ algo }
+                editMode={ editMode }
             />
 
             <div className="board">

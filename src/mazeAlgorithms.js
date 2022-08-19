@@ -28,8 +28,13 @@ function createRecursiveMaze(cells, get) {
             if ( cell.getType() === 'start' || cell.getType() === 'target' ) continue
             if (
                 ( i === 0 ) || ( i === size[0] - 1 ) ||
-                ( j === 0 ) || ( j === size[1] - 1 ) ||
-                ( i % 2 === 0 ) || ( (i + j) % 2 === 1 )
+                ( j === 0 ) || ( j === size[1] - 1 )
+            ){
+                cell.mark( i + j, 'wall', false )
+            }
+            else if (
+                ( i % 2 === 0 ) || ( (i + j) % 2 === 1 ) &&
+                ( Math.floor(Math.random() * 4) < 3 )
             ){
                 cell.mark( i + j, 'wall', false )
             }
@@ -44,11 +49,20 @@ function createRecursiveMaze(cells, get) {
         // Get unvisited neighbors
         let unvisited = getNeighbors( current, 2 ).filter( i => !get(i).isVisited() )
         while ( unvisited.length !== 0 ){
-            // Choose one randomly
-            let selected = unvisited[ Math.floor(Math.random() * unvisited.length) ]
+            // Normal random
+            let random = Math.floor( Math.random() * unvisited.length )
+            // Skew ( Uncomment )
+            // if ( true && Math.floor( Math.random() * 4 ) > 0 ){
+            //     let options = unvisited.filter( x => ( x[1] === current[1] + 2 ) || ( x[1] === current[1] - 2 ) )
+            //     if ( options.length !== 0 ) {
+            //         random = unvisited.indexOf( options[ Math.floor( Math.random() * options.length ) ] )
+            //     }
+            // }
+
+            let selected = unvisited[ random ]
             // Break down the wall between current and selected
             let wallPos = [ (selected[0] - current[0])/2, (selected[1] - current[1])/2 ]
-            let wall = get([ current[0] + wallPos[0], current[1] + wallPos[1]])
+            let wall = get([ current[0] + wallPos[0], current[1] + wallPos[1] ])
             if ( wall.getType() === 'wall' ) {
                 wall.mark( ++count, 'regular' )
             } else {
@@ -61,7 +75,8 @@ function createRecursiveMaze(cells, get) {
         }
     }
 
-    recurse([1,1], size[0] + size[1])
+    let corners = [ [1,1], [size[0]-2, 1], [1, size[1]-2], [size[0]-2, size[1]-2] ]
+    recurse(corners[ Math.floor( Math.random() * corners.length ) ], size[0] + size[1])
 }
 
 function createRandomMaze(type, get) {

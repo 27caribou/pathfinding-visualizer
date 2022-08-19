@@ -9,7 +9,8 @@ export default class Cell {
     #searchStatus = ''
 
     static boardSize;
-    static updateBoard
+    static animationSpeed = 60;
+    static updateBoard;
 
     constructor( pos, type = 'regular' ) {
         this.#position = pos
@@ -45,7 +46,7 @@ export default class Cell {
             }
 
             Cell.updateBoard()
-        }, 60 * order )
+        }, Cell.animationSpeed * order )
     }
 
     clearVisit() {

@@ -170,7 +170,7 @@ function Astar( start, get ) {
     }
 
     // Not found
-    return []
+    return [ count, null ]
 }
 
 
