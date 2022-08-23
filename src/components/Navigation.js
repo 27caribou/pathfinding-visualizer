@@ -28,7 +28,7 @@ const Navigation = ({ set, clearBoard, clearPath, editMode }) => {
                             { [ 'Fast', 'Normal', 'Slow' ].map( x =>
                                 <li key={x} onClick={ () => {
                                     if ( !editMode ) return
-                                    let speed = x === 'Fast' ? 10 : ( x === 'Normal' ? 60 : 200 )
+                                    let speed = x === 'Fast' ? 10 : ( x === 'Normal' ? 50 : 200 )
                                     set( 'speed', speed )
                                 } }>{x}</li>
                             ) }

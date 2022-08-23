@@ -10,7 +10,7 @@ const App = () => {
     const [ cells, setCells ] = useState([])
     const [ algo, setAlgo ] = useState('')
     const [ pattern, setPattern ] = useState('')
-    const [ speed, setSpeed ] = useState(30)
+    const [ speed, setSpeed ] = useState(50)
     const [ dragType, setDragType ] = useState('')
     const [ editMode, setEditMode ] = useState(true)
     const forceUpdate = useForceUpdate()
@@ -37,13 +37,9 @@ const App = () => {
         Cell.boardSize = size
     }, [size])
 
-    useEffect(() => {
-        if ( pattern !== '' ) setCells( newBoard(size) )
-    }, [pattern])
+    useEffect(() => { if ( pattern !== '' ) setCells( newBoard(size) ) }, [pattern])
 
-    useEffect(() => {
-        Cell.animationSpeed = speed
-    }, [speed])
+    useEffect(() => { Cell.animationSpeed = speed }, [speed])
 
     useEffect(() => {
         if ( cells.length === 0 ) return
