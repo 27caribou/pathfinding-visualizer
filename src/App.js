@@ -115,7 +115,7 @@ const App = () => {
             cell.addEventListener( 'mouseenter', handleMouseEnter )
             if ( dragType === 'weight' || dragType === 'wall' ){
                 cell.addEventListener( 'mousedown', handleMouseDown )
-                cell.addEventListener( 'mouseup', handleMouseUp )
+                document.querySelector('.grid').addEventListener( 'mouseup', handleMouseUp )
             } else {
                 cell.addEventListener( 'click', handleClick )
             }
@@ -126,7 +126,7 @@ const App = () => {
                 cell.removeEventListener( 'mouseenter', handleMouseEnter )
                 if ( dragType === 'weight' || dragType === 'wall' ){
                     cell.removeEventListener( 'mousedown', handleMouseDown )
-                    cell.removeEventListener( 'mouseup', handleMouseUp )
+                    document.querySelector('.grid').removeEventListener( 'mouseup', handleMouseUp )
                 } else {
                     cell.removeEventListener( 'click', handleClick )
                 }
@@ -184,7 +184,7 @@ const App = () => {
         let start = document.querySelector('.cell.start').id
         let solution = getPath( start, algo, getCell )
 
-        if ( solution[1] === null ){
+        if ( solution.length === 0 || solution[1] === null ){
             console.log('Not found...')
         } else {
             // Retrace path

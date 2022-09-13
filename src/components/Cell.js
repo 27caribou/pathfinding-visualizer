@@ -9,7 +9,7 @@ export default class Cell {
     #searchStatus = ''
 
     static boardSize;
-    static animationSpeed = 50;
+    static animationSpeed = 40;
     static updateBoard;
 
     constructor( pos, type = 'regular' ) {
