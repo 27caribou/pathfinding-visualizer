@@ -235,6 +235,8 @@ const App = () => {
                     ></div> ) }
                 </div>
             </div>
+
+            <div className="credit">© 2022 Teddy N'go</div>
         </>
     )
 }
