@@ -1,12 +1,14 @@
 # Pathfinding Application
 
-Welcome to my pathfinding application! I built this project to practice some basic search algorithms I came across in my studies and observe how they work in an interactive way.
+Welcome to my pathfinding application! I built this project to practice some basic search algorithms I studied in my coursework and observe how they work in an interactive way. You can choose up to 5 search algorithms: BFS, DFS, UCS, Greedy, and A* search.
 
-![Design preview for the Product feedback app coding challenge](./src/images/pathfinding-app.png)
+![Preview of the Pathfinding Application](./src/images/pathfinding-app.png)
+
+In addition, I implemented my own version for Recursive Division so that the application can generate different mazes every time you click on the option in the dropdown. Compared to the original algorithm, my version can create more than one pathway to the destination, which is important when trying to understand the power of weighted algorithms such as A* search.
 
 My project was inspired from this [resource](https://github.com/clementmihailescu/Pathfinding-Visualizer) I stumbled upon, but everything I made was built from scratch.
 
-You can test my application [here](https://github.com/facebook/create-react-app).
+You can test my application [here](https://my-path-finder-app.herokuapp.com).
 
 ## Built with
 
