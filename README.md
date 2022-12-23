@@ -8,7 +8,7 @@ In addition, I implemented my own version for Recursive Division so that the app
 
 My project was inspired from this [resource](https://github.com/clementmihailescu/Pathfinding-Visualizer) I stumbled upon, but everything I made was built from scratch.
 
-You can test my application [here](https://my-path-finder-app.herokuapp.com).
+You can test my application [here](https://path-visualizer-tngo.netlify.app).
 
 ## Built with
 
